@@ -1,0 +1,30 @@
+# version: '2'
+services:
+  mariadb:
+    restart: unless-stopped
+    networks:
+      - default
+  suitecrm:
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-10080}:8080"
+      - "${HTTPS_PORT:-10443}:8443"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=false
+      - SUITECRM_USERNAME=user
+      - SUITECRM_PASSWORD=bitmosys
+      - SUITECRM_EMAIL=suraj@bitmosys.com
+      - SUITECRM_HOST=suite-demo.surajkhayamali.com.np
+      - SUITECRM_ENABLE_HTTPS=yes
+
+      - VIRTUAL_HOST=suitecrm.surajkhayamali.com.np
+      - VIRTUAL_PORT=8080
+      - LETSENCRYPT_HOST=suitecrm.surajkhayamali.com.np
+      - LETSENCRYPT_EMAIL=suraj@bitmosys.com
+    networks:
+      - default
+      - proxy_nginx-proxy-tier
+
+networks:
+  proxy_nginx-proxy-tier:
+    external: true

@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    command: --templates https://suraj-bitmosys.github.io/portainer-templates/templates-2.0.json
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=docker.surajkhayamali.com.np
+      - VIRTUAL_PORT=9000
+      - LETSENCRYPT_HOST=docker.surajkhayamali.com.np
+      - LETSENCRYPT_EMAIL=suraj@bitmosys.com
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+      - "9443:9443"
+    networks:
+      - proxy_nginx-proxy-tier
+
+volumes:
+  portainer_data:
+
+
+networks:
+  proxy_nginx-proxy-tier:
+    external: true

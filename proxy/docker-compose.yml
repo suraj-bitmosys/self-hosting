@@ -1,0 +1,53 @@
+version: '2'
+
+services:
+
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    restart: unless-stopped
+    environment:
+      - TRUST_DOWNSTREAM_PROXY=false
+    labels:
+      com.github.nginx-proxy.nginx: "true"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:rw
+      - vhost.d:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - ./uploadsize.conf:/etc/nginx/conf.d/uploadsize.conf:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - "default"
+      - "nginx-proxy-tier"
+
+  nginx-proxy-letsencrypt:
+    image: nginxproxy/acme-companion
+    container_name: letsencrypt
+    restart: unless-stopped
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+      - DEFAULT_EMAIL=suraj@bitmosys.com
+      # - ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - acme:/etc/acme.sh
+    volumes_from:
+      - "nginx-proxy"
+    depends_on:
+      - "nginx-proxy"
+    networks:
+      - "default"
+      - "nginx-proxy-tier"
+
+volumes:
+  certs:
+  vhost.d:
+  html:
+  acme:
+
+networks:
+  nginx-proxy-tier:
+

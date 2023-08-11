@@ -2,6 +2,8 @@
 services:
   mariadb:
     restart: unless-stopped
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
     networks:
       - default
   suitecrm:
@@ -10,7 +12,7 @@ services:
       - "${HTTP_PORT:-10080}:8080"
       - "${HTTPS_PORT:-10443}:8443"
     environment:
-      - ALLOW_EMPTY_PASSWORD=false
+      - ALLOW_EMPTY_PASSWORD=no
       - SUITECRM_USERNAME=user
       - SUITECRM_PASSWORD=bitmosys
       - SUITECRM_EMAIL=suraj@bitmosys.com

@@ -24,7 +24,7 @@ services:
       - SUITECRM_DATABASE_PORT_NUMBER=3306
       - SUITECRM_DATABASE_USER=bn_suitecrm
       - SUITECRM_DATABASE_NAME=bitnami_suitecrm
-      - SUITECRM_DATABASE_PASSWORD=bitnami123a
+      - SUITECRM_DATABASE_PASSWORD=bitnami123
 
       # Overrides
       - SUITECRM_USERNAME=user

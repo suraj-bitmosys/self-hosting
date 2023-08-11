@@ -15,8 +15,17 @@ services:
       LETSENCRYPT_EMAIL: suraj@bitmosys.com
     networks:
       - proxy_nginx-proxy-tier
-      
+
   web:
+    <<: *app
+
+  worker:
+    <<: *app
+
+  cron:
+    <<: *app
+
+  seeder:
     <<: *app
 
 networks:

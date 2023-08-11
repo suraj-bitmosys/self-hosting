@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     environment:
       - ALLOW_EMPTY_PASSWORD=no
-      - MARIADB_RANDOM_ROOT_PASSWORD=yes
+      - MARIADB_ROOT_PASSWORD=bitmosys-root
     networks:
       - default
   suitecrm:
@@ -17,7 +17,7 @@ services:
       - SUITECRM_USERNAME=user
       - SUITECRM_PASSWORD=bitmosys
       - SUITECRM_EMAIL=suraj@bitmosys.com
-      - SUITECRM_HOST=suite-demo.surajkhayamali.com.np
+      - SUITECRM_HOST=suitecrm.surajkhayamali.com.np
       - SUITECRM_ENABLE_HTTPS=yes
 
       - VIRTUAL_HOST=suitecrm.surajkhayamali.com.np

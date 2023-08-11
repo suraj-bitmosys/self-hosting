@@ -4,6 +4,7 @@ services:
     restart: unless-stopped
     environment:
       - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_RANDOM_ROOT_PASSWORD=yes
     networks:
       - default
   suitecrm:

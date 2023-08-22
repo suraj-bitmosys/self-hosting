@@ -24,6 +24,7 @@ services:
       - MAUTIC_DB_PASSWORD=mypassword
       - MAUTIC_DB_NAME=mautic4
 
+      - MAUTIC_TRUSTED_PROXIES=["REMOTE_ADDR"]
       - MAUTIC_URL=https://${DOMAIN}
       - MAUTIC_ADMIN_EMAIL=suraj@bitmosys.com
       - MAUTIC_ADMIN_PASSWORD=bitmosys

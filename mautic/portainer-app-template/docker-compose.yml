@@ -3,7 +3,6 @@ version: "2"
 services:
   database:
     image: powertic/percona-docker
-    container_name: database
     environment:
       MYSQL_ROOT_PASSWORD: mypassword
     # ports:
@@ -16,7 +15,6 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --sql-mode=""
 
   mautic:
-    container_name: mautic
     image: mautic/mautic:v4-apache
     volumes:
       - mautic_data:/var/www/html

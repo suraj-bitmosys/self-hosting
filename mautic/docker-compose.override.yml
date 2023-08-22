@@ -1,0 +1,15 @@
+# version: '2'
+
+services:
+  mautic:
+    environment:
+      VIRTUAL_HOST: mautic.surajkhayamali.com.np
+      # VIRTUAL_PORT: 8880
+      LETSENCRYPT_HOST: mautic.surajkhayamali.com.np
+      LETSENCRYPT_EMAIL: suraj@bitmosys.com
+    networks:
+      - proxy_nginx-proxy-tier
+
+networks:
+  proxy_nginx-proxy-tier:
+    external: true

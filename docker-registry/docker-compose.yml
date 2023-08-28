@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  docker-registry:
+    image: registry:2
+    container_name: docker-registry
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=docker-registry.surajkhayamali.com.np
+      - VIRTUAL_PORT=5000
+      - LETSENCRYPT_HOST=docker-registry.surajkhayamali.com.np
+      - LETSENCRYPT_EMAIL=suraj@bitmosys.com
+    ports:
+      - "5000:5000"
+    networks:
+      - proxy_nginx-proxy-tier
+
+networks:
+  nginx-proxy-tier:
+    external: true
+

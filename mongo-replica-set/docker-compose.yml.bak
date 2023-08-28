@@ -1,0 +1,77 @@
+version: '3.8'
+
+networks:
+  mongo-database-tier:
+
+volumes:
+  mongo-one-vol:
+  mongo-two-vol:
+  mongo-three-vol:
+
+services:
+  mongo-one-db:
+    container_name: mongo-one-db
+    image: mongo:latest
+    restart: unless-stopped
+    networks:
+      mongo-database-tier:
+    ports:
+      - 20000:27017
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongo-one-vol:/data/db
+      # - ./rs-init.sh:/scripts/rs-init.sh
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: suraj
+      MONGO_INITDB_ROOT_PASSWORD: bitmosys-suraj
+      MONGO_INITDB_DATABASE: tds-db
+      MONGO_USER: application
+      MONGO_PASSWORD: bitmosys-application
+
+      VIRTUAL_HOST: mongo.surajkhayamali.com.np
+      # VIRTUAL_PORT: 27017
+      # LETSENCRYPT_HOST: mongo.surajkhayamali.com.np
+      # LETSENCRYPT_EMAIL: suraj@bitmosys.com
+    command: mongod --replSet dbrs
+
+  mongo-two-db:
+    container_name: mongo-two-db
+    image: mongo:latest
+    restart: unless-stopped
+    networks:
+      mongo-database-tier:
+    ports:
+      - 20001:27017
+    depends_on:
+      - mongo-one-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: suraj
+      MONGO_INITDB_ROOT_PASSWORD: bitmosys-suraj
+      MONGO_INITDB_DATABASE: tds-db
+      MONGO_USER: application
+      MONGO_PASSWORD: bitmosys-application
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongo-two-vol:/data/db
+    command: mongod --replSet dbrs
+
+  mongo-three-db:
+    container_name: mongo-three-db
+    image: mongo:latest
+    restart: unless-stopped
+    networks:
+      mongo-database-tier:
+    ports:
+      - 20002:27017
+    depends_on:
+      - mongo-one-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: suraj
+      MONGO_INITDB_ROOT_PASSWORD: bitmosys-suraj
+      MONGO_INITDB_DATABASE: tds-db
+      MONGO_USER: application
+      MONGO_PASSWORD: bitmosys-application
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongo-three-vol:/data/db
+    command: mongod --replSet dbrs

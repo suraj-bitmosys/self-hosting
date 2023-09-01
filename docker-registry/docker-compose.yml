@@ -10,12 +10,24 @@ services:
       - VIRTUAL_PORT=5000
       - LETSENCRYPT_HOST=docker-registry.surajkhayamali.com.np
       - LETSENCRYPT_EMAIL=suraj@bitmosys.com
-    ports:
-      - "5000:5000"
+
+      # - REGISTRY_HTTP_ADDR=0.0.0.0:443
+      # - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/docker-registry.surajkhayamali.com.np.crt
+      # - REGISTRY_HTTP_TLS_KEY=/certs/docker-registry.surajkhayamali.com.np.key
+    # ports:
+    #   - "5000:5000"
+    #   - "443"
     networks:
       - proxy_nginx-proxy-tier
+#     volumes:
+#       - proxy_certs:/certs
+
+# volumes:
+#   proxy_certs:
+#     external: true
+
 
 networks:
-  nginx-proxy-tier:
+  proxy_nginx-proxy-tier:
     external: true
 

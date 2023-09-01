@@ -16,5 +16,5 @@ services:
       - proxy_nginx-proxy-tier
 
 networks:
-  nginx-proxy-tier:
+  proxy_nginx-proxy-tier:
     external: true

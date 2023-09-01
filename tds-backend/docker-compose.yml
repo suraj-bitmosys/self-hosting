@@ -1,0 +1,91 @@
+version: '3.1'
+
+services:
+  redis:
+    image: redis/redis-stack:latest
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - redis_data:/data
+    networks:
+      - default
+      
+  backend:
+    # build: ../..
+    # image: tds-backend
+    image: docker-registry-bitmosys.surajkhayamali.com.np/tds-backend
+    restart: unless-stopped
+    ports:
+      - "8080:${PORT}"
+    environment:
+      - PORT=${PORT}
+
+      - MONGODB_CLIENT_URL=${MONGODB_CLIENT_URL}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_SEED=${DATABASE_SEED}
+      
+      - SALT_ROUNDS=${SALT_ROUNDS}
+
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN}
+
+      - COOKIE_SECRET=${COOKIE_SECRET}
+      - COOKIE_MAX_AGE=${COOKIE_MAX_AGE}
+      - COOKIE_REFRESH_MAX_AGE=${COOKIE_REFRESH_MAX_AGE}
+
+      - CONFIGURE_SWAGGER_DOC=${CONFIGURE_SWAGGER_DOC}
+      
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_USERNAME=${REDIS_USERNAME}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_TTL=${REDIS_TTL}
+      - REDIS_TTL_FOR_STREAMS=${REDIS_TTL_FOR_STREAMS}
+
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_SECURE=${SMTP_SECURE}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_FROM=${SMTP_FROM}
+      - SMTP_REPLY_TO=${SMTP_REPLY_TO}
+      - SMTP_REPLY_TO_BOOKING=${SMTP_REPLY_TO_BOOKING}
+      - SMTP_REPLY_TO_ADMIN=${SMTP_REPLY_TO_ADMIN}
+      - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - BOOKING_EMAIL=${BOOKING_EMAIL}
+      - SUPPORT_EMAIL=${SUPPORT_EMAIL}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+
+      - TZ=${TZ}
+
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_FROM=${TWILIO_FROM}
+      - THROTTLE_TTL=${THROTTLE_TTL}
+      - THROTTLE_LIMIT=${THROTTLE_LIMIT}
+      
+      - GET_ADDRESS_IO_API_KEY=${GET_ADDRESS_IO_API_KEY}
+
+      - FASTIFY_SECURE_SESSION_SECRET=${FASTIFY_SECURE_SESSION_SECRET}
+      - FASTIFY_SECURE_SESSION_SALT=${FASTIFY_SECURE_SESSION_SALT}
+
+      - EXPO_ACCESS_TOKEN=${EXPO_ACCESS_TOKEN}
+
+      - CORS_ORIGIN=${CORS_ORIGIN}
+      - CORS_CREDENTIALS=${CORS_CREDENTIALS}
+
+      - AVAILABLE_MEMORY_IN_MB=${AVAILABLE_MEMORY_IN_MB}
+    networks:
+      - default
+      - mongo-replica-set_mongo-database-tier
+
+volumes:
+  redis_data:
+
+networks:
+  default:
+  mongo-replica-set_mongo-database-tier:
+    external: true

@@ -92,6 +92,16 @@ services:
       - default
       - mongo-replica-set_mongo-database-tier
 
+  admin:
+    image: docker-registry-bitmosys.surajkhayamali.com.np/tds-admin
+    ports:
+      - "80"
+
+  practice:
+    image: docker-registry-bitmosys.surajkhayamali.com.np/tds-practice
+    ports:
+      - "80"
+
 volumes:
   redis_data:
 

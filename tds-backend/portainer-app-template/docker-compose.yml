@@ -5,8 +5,8 @@ services:
     image: redis/redis-stack:latest
     restart: unless-stopped
     ports:
-      - "6379:6379"
-      - "8001:8001"
+      - "6379"
+      - "8001"
     volumes:
       - redis_data:/data
     networks:
@@ -84,19 +84,43 @@ services:
 
       - EXPO_ACCESS_TOKEN=${EXPO_ACCESS_TOKEN}
 
-      - CORS_ORIGIN=${CORS_ORIGIN}
+      - CORS_ORIGIN=https://${ADMIN_DOMAIN},https://${PRACTICE_DOMAIN},${CORS_ORIGIN}
       - CORS_CREDENTIALS=${CORS_CREDENTIALS}
 
       - AVAILABLE_MEMORY_IN_MB=${AVAILABLE_MEMORY_IN_MB}
 
-      # Domain related      
-      - VIRTUAL_HOST=${DOMAIN}
+      # Domain related
+      - VIRTUAL_HOST=${API_DOMAIN}
       - VIRTUAL_PORT=${PORT}
-      - LETSENCRYPT_HOST=${DOMAIN}
+      - LETSENCRYPT_HOST=${API_DOMAIN}
       - LETSENCRYPT_EMAIL=suraj@bitmosys.com
     networks:
       - default
       - mongo-replica-set_mongo-database-tier
+      - proxy_nginx-proxy-tier
+
+  admin:
+    image: docker-registry-bitmosys.surajkhayamali.com.np/tds-admin
+    environment:
+      - VIRTUAL_HOST=${ADMIN_DOMAIN}
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=${ADMIN_DOMAIN}
+      - LETSENCRYPT_EMAIL=suraj@bitmosys.com
+    ports:
+      - "80"
+    networks:
+      - proxy_nginx-proxy-tier
+
+  practice:
+    image: docker-registry-bitmosys.surajkhayamali.com.np/tds-practice
+    environment:
+      - VIRTUAL_HOST=${PRACTICE_DOMAIN}
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=${PRACTICE_DOMAIN}
+      - LETSENCRYPT_EMAIL=suraj@bitmosys.com
+    ports:
+      - "80"
+    networks:
       - proxy_nginx-proxy-tier
 
 volumes:

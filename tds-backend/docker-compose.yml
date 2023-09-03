@@ -20,6 +20,7 @@ services:
     ports:
       - "8080:${PORT}"
     environment:
+      - NODE_ENV=production
       - PORT=${PORT}
 
       - MONGODB_CLIENT_URL=${MONGODB_CLIENT_URL}

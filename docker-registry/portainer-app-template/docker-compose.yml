@@ -14,7 +14,12 @@ services:
       - "5000"
     networks:
       - proxy_nginx-proxy-tier
+    volumes:
+      - data:/var/lib/registry
 
 networks:
   proxy_nginx-proxy-tier:
     external: true
+
+volumes:
+  data:

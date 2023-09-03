@@ -6,25 +6,21 @@ services:
     container_name: docker-registry
     restart: unless-stopped
     environment:
+      - REGISTRY_AUTH=htpasswd
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+      - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+
       - VIRTUAL_HOST=docker-registry.surajkhayamali.com.np
       - VIRTUAL_PORT=5000
       - LETSENCRYPT_HOST=docker-registry.surajkhayamali.com.np
       - LETSENCRYPT_EMAIL=suraj@bitmosys.com
-
-      # - REGISTRY_HTTP_ADDR=0.0.0.0:443
-      # - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/docker-registry.surajkhayamali.com.np.crt
-      # - REGISTRY_HTTP_TLS_KEY=/certs/docker-registry.surajkhayamali.com.np.key
-    # ports:
-    #   - "5000:5000"
-    #   - "443"
+    ports:
+      - "5000:5000"
     networks:
       - proxy_nginx-proxy-tier
-#     volumes:
-#       - proxy_certs:/certs
-
-# volumes:
-#   proxy_certs:
-#     external: true
+    volumes:
+      - ./auth:/auth
+      - ./data:/var/lib/registry
 
 
 networks:

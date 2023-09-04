@@ -95,6 +95,8 @@ services:
       - VIRTUAL_PORT=${PORT}
       - LETSENCRYPT_HOST=${API_DOMAIN}
       - LETSENCRYPT_EMAIL=suraj@bitmosys.com
+    volumes:
+      - uploads_data:/usr/src/app/${FILE_SYSTEM_ROOT}/uploads
     networks:
       - default
       - mongo-replica-set_mongo-database-tier
@@ -126,6 +128,7 @@ services:
 
 volumes:
   redis_data:
+  uploads_data:
 
 networks:
   default:

@@ -89,6 +89,8 @@ services:
       - CORS_CREDENTIALS=${CORS_CREDENTIALS}
 
       - AVAILABLE_MEMORY_IN_MB=${AVAILABLE_MEMORY_IN_MB}
+    volumes:
+      - uploads_data:/usr/src/app/${FILE_SYSTEM_ROOT}/uploads
     networks:
       - default
       - mongo-replica-set_mongo-database-tier
@@ -105,6 +107,7 @@ services:
 
 volumes:
   redis_data:
+  uploads_data:
 
 networks:
   default:
